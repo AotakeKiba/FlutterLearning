@@ -19,7 +19,8 @@ class MyApp extends StatelessWidget {
         title: 'Namer App',
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+          //for color theme
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         ),
         home: MyHomePage(),
       ),
@@ -44,20 +45,53 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
+    var pair = appState.current;
 
     return Scaffold(
-      body: Column(
-        children: [
-          Text('A random AWESOME idea:'),
-          Text(appState.current.asLowerCase),
-          //Text(appState.current2.asLowerCase),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            //Text('A random AWESOME idea:'),
+            BigCard(pair: pair),
+            //Text(appState.current.asLowerCase),
+            //Text(appState.current2.asLowerCase),
 
-          ElevatedButton(
-            onPressed: () {
-              appState.getNext();},
-            child: Text ('Next'),
-          )
-        ],    
+            SizedBox(height: 20,),
+
+            ElevatedButton(
+              onPressed: () {
+                appState.getNext();},
+              child: Text ('Next'),
+            ),
+          ],    
+        ),
+      ),
+    );
+  }
+}
+
+class BigCard extends StatelessWidget {
+  const BigCard({
+    super.key,
+    required this.pair,
+  });
+
+  final WordPair pair;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    //for color
+    final style = theme.textTheme.displayMedium!.copyWith(color: theme.colorScheme.onPrimary, backgroundColor: theme.colorScheme.secondary);
+
+    return Card(
+      color: theme.colorScheme.primary,
+      //color: theme.colorScheme.fromSeed(seedColor: Colors.green),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+
+        child: Text(pair.asLowerCase, style: style, semanticsLabel: "${pair.first} ${pair.second}",),
       ),
     );
   }
